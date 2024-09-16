@@ -140,6 +140,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 
     <script>
+        // Initialize particles.js
         particlesJS("particles-js", {
             "particles": {
                 "number": {
@@ -210,6 +211,7 @@
             }
         });
 
+        // Initialize score
         let score = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
         document.getElementById('score').innerText = `Points: ${score}`;
 
@@ -234,6 +236,7 @@
             });
         });
 
+        // Tab navigation
         document.getElementById('game-nav').addEventListener('click', () => {
             document.getElementById('game-content').classList.add('active');
             document.getElementById('referral-content').classList.remove('active');
@@ -248,7 +251,9 @@
             document.getElementById('referral-nav').classList.add('active');
         });
 
+        // Generate referral link
         document.getElementById('generate-referral').addEventListener('click', () => {
+            console.log('Generate referral link clicked');
             fetch('https://your-heroku-app.herokuapp.com/generate-referral', {
                 method: 'POST',
                 headers: {
@@ -261,4 +266,10 @@
                 const referralLink = data.referralLink;
                 document.getElementById('referral-link').innerText = referralLink;
             })
-            .
+            .catch(error => {
+                console.error('Error fetching referral link:', error);
+            });
+        });
+    </script>
+</body>
+</html>

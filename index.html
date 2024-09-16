@@ -8,9 +8,39 @@
         body {
             text-align: center;
             font-family: Arial, sans-serif;
-            margin-top: 50px;
-            background-color: #e0f7fa; /* لون خلفية أزرق فاتح */
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #004d40; /* لون خلفية داكن */
             overflow: hidden; /* إخفاء التمرير للتفاعل الكامل مع الخلفية */
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+        .tab {
+            padding: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab.active {
+            background-color: #0288d1;
+            color: white;
+        }
+        .content {
+            padding: 20px;
+            display: none;
+        }
+        .content.active {
+            display: block;
         }
         img {
             width: 200px;
@@ -20,8 +50,6 @@
             font-size: 24px;
             margin-top: 20px;
         }
-
-        /* إضافة كود CSS للجسيمات */
         #particles-js {
             position: absolute;
             width: 100%;
@@ -33,90 +61,101 @@
     </style>
 </head>
 <body>
-    <!-- الجسيمات التفاعلية (الخلفية) -->
-    <div id="particles-js"></div>
-    
-    <h1>اضغط على الصورة لزيادة النقاط!</h1>
-    <img src="metacces.jpg" alt="Click me!" id="game-image">
-    <div class="score">النقاط: <span id="score">0</span></div>
-    
-    <!-- إضافة الصوت -->
-    <audio id="click-sound" src="click-sound.mp3" preload="auto"></audio>
+    <div class="container">
+        <div class="tab active" id="game-tab">اللعبة</div>
+        <div class="tab" id="referral-tab">نظام الإحالة</div>
+
+        <div class="content active" id="game-content">
+            <!-- الجسيمات التفاعلية (الخلفية) -->
+            <div id="particles-js"></div>
+            <h1>اضغط على الصورة لزيادة النقاط!</h1>
+            <img src="metacces.jpg" alt="Click me!" id="game-image">
+            <div class="score">النقاط: <span id="score">0</span></div>
+            <!-- إضافة الصوت -->
+            <audio id="click-sound" src="click-sound.mp3" preload="auto"></audio>
+        </div>
+        <div class="content" id="referral-content">
+            <h1>نظام الإحالة</h1>
+            <p>احصل على رابط الإحالة الخاص بك وشاركه مع أصدقائك. عندما ينضم شخص إلى البوت عبر رابطك، ستحصل على 150 نقطة.</p>
+            <button id="generate-referral">احصل على رابط الإحالة</button>
+            <div id="referral-link" style="margin-top: 20px;"></div>
+        </div>
+    </div>
 
     <!-- كود الجسيمات (particles.js) -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
     <!-- إعدادات الجسيمات -->
     <script>
-    particlesJS("particles-js", {
-        "particles": {
-            "number": {
-                "value": 100,
-                "density": {
-                    "enable": true,
-                    "value_area": 800
-                }
-            },
-            "color": {
-                "value": "#ffffff"
-            },
-            "shape": {
-                "type": "circle",
-                "stroke": {
-                    "width": 0,
-                    "color": "#000000"
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 100,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
                 },
-                "polygon": {
-                    "nb_sides": 5
-                }
-            },
-            "opacity": {
-                "value": 0.5,
-                "random": false
-            },
-            "size": {
-                "value": 3,
-                "random": true
-            },
-            "line_linked": {
-                "enable": true,
-                "distance": 150,
-                "color": "#ffffff",
-                "opacity": 0.4,
-                "width": 1
-            },
-            "move": {
-                "enable": true,
-                "speed": 6,
-                "direction": "none",
-                "random": false,
-                "straight": false,
-                "out_mode": "out",
-                "bounce": false
-            }
-        },
-        "interactivity": {
-            "detect_on": "canvas",
-            "events": {
-                "onhover": {
-                    "enable": true,
-                    "mode": "grab"
+                "color": {
+                    "value": "#ffffff"
                 },
-                "onclick": {
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false
+                },
+                "size": {
+                    "value": 3,
+                    "random": true
+                },
+                "line_linked": {
                     "enable": true,
-                    "mode": "push"
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
                 }
             },
-            "modes": {
-                "grab": {
-                    "distance": 140,
-                    "line_linked": {
-                        "opacity": 1
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    }
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
                     }
                 }
             }
-        }
-    });
+        });
     </script>
 
     <!-- الكود الرئيسي للعبة -->
@@ -145,6 +184,40 @@
             // تشغيل الصوت
             clickSound.play().catch(error => {
                 console.error('فشل تشغيل الصوت:', error);
+            });
+        });
+
+        // التبديل بين الأقسام
+        document.getElementById('game-tab').addEventListener('click', () => {
+            document.getElementById('game-content').classList.add('active');
+            document.getElementById('referral-content').classList.remove('active');
+            document.getElementById('game-tab').classList.add('active');
+            document.getElementById('referral-tab').classList.remove('active');
+        });
+
+        document.getElementById('referral-tab').addEventListener('click', () => {
+            document.getElementById('game-content').classList.remove('active');
+            document.getElementById('referral-content').classList.add('active');
+            document.getElementById('game-tab').classList.remove('active');
+            document.getElementById('referral-tab').classList.add('active');
+        });
+
+        // توليد رابط الإحالة
+        document.getElementById('generate-referral').addEventListener('click', () => {
+            fetch('https://github.com/davidmo85/telegram-mini-app', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ action: 'generateReferralLink' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const referralLink = data.referralLink;
+                document.getElementById('referral-link').innerText = referralLink;
+            })
+            .catch(error => {
+                console.error('خطأ في توليد الرابط:', error);
             });
         });
     </script>

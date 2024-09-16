@@ -19,14 +19,108 @@
             font-size: 24px;
             margin-top: 20px;
         }
+
+  /* إضافة كود CSS للجسيمات */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+   }
+        
     </style>
 </head>
 <body>
+    <!-- الجسيمات التفاعلية (الخلفية) -->
+    <div id="particles-js"></div>
+    
     <h1>اضغط على الصورة لزيادة النقاط!</h1>
     <img src="metacces.jpg" alt="Click me!" id="game-image">
     <div class="score">النقاط: <span id="score">0</span></div>
  <!-- إضافة الصوت -->
     <audio id="click-sound" src="click-sound.mp3"></audio>
+
+
+    <!-- كود الجسيمات (particles.js) -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- إعدادات الجسيمات -->
+    <script>
+    particlesJS("particles-js", {
+        "particles": {
+            "number": {
+                "value": 100,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                },
+                "polygon": {
+                    "nb_sides": 5
+                }
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false
+            },
+            "size": {
+                "value": 3,
+                "random": true
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffffff",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 6,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "grab"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                }
+            },
+            "modes": {
+                "grab": {
+                    "distance": 140,
+                    "line_linked": {
+                        "opacity": 1
+                    }
+                }
+            }
+        }
+    });
+    </script>
+
+<!-- الكود الرئيسي للعبة -->
+    
     <script>
         // متغير لتتبع عدد النقاط
         let score = 0;
@@ -34,12 +128,18 @@
         // اختر الصورة من خلال ID الخاص بها
         const gameImage = document.getElementById('game-image');
         const clickSound = document.getElementById('click-sound');
+         // تحميل النقاط من LocalStorage إذا كانت محفوظة
+        let score = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
+        document.getElementById('score').innerText = score;
         // عندما يتم الضغط على الصورة
         gameImage.addEventListener('click', () => {
             // زيادة النقاط بمقدار واحد
             score += 1;
             // تحديث العرض على الشاشة
             document.getElementById('score').innerText = score;
+             // حفظ النقاط في LocalStorage
+            localStorage.setItem('userScore', score);
+            
             clickSound.play();
         });
     </script>

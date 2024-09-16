@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة الضغط على الصورة</title>
+    <title>Interactive Click Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             text-align: center;
@@ -14,26 +15,36 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #004d40; /* لون خلفية داكن */
-            overflow: hidden; /* إخفاء التمرير للتفاعل الكامل مع الخلفية */
+            background-color: #003c40; /* Dark background */
+            overflow: hidden;
         }
         .container {
             width: 90%;
             max-width: 800px;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             background-color: #ffffff;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            background-color: #0288d1;
         }
         .tab {
             padding: 15px;
             cursor: pointer;
             font-size: 18px;
-            border-bottom: 1px solid #ddd;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .tab.active {
-            background-color: #0288d1;
-            color: white;
+            background-color: #026aa7;
+        }
+        .tab i {
+            margin-right: 8px;
         }
         .content {
             padding: 20px;
@@ -45,10 +56,18 @@
         img {
             width: 200px;
             cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.05);
         }
         .score {
             font-size: 24px;
             margin-top: 20px;
+            transition: color 0.3s ease;
+        }
+        .score.updated {
+            color: #d32f2f; /* Color change when score updates */
         }
         #particles-js {
             position: absolute;
@@ -58,34 +77,68 @@
             left: 0;
             z-index: -1;
         }
+        .referral-button {
+            background-color: #0288d1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .referral-button:hover {
+            background-color: #026aa7;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #0288d1;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        .bottom-nav div {
+            color: #ffffff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .bottom-nav div:hover {
+            color: #026aa7;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="tab active" id="game-tab">اللعبة</div>
-        <div class="tab" id="referral-tab">نظام الإحالة</div>
+        <div class="tabs">
+            <div class="tab active" id="game-tab"><i class="fas fa-gamepad"></i> Game</div>
+            <div class="tab" id="referral-tab"><i class="fas fa-share-alt"></i> Referral</div>
+        </div>
 
         <div class="content active" id="game-content">
-            <!-- الجسيمات التفاعلية (الخلفية) -->
             <div id="particles-js"></div>
-            <h1>اضغط على الصورة لزيادة النقاط!</h1>
+            <h1>Click the Image to Increase Points!</h1>
             <img src="metacces.jpg" alt="Click me!" id="game-image">
-            <div class="score">النقاط: <span id="score">0</span></div>
-            <!-- إضافة الصوت -->
+            <div class="score" id="score">Points: 0</div>
             <audio id="click-sound" src="click-sound.mp3" preload="auto"></audio>
         </div>
         <div class="content" id="referral-content">
-            <h1>نظام الإحالة</h1>
-            <p>احصل على رابط الإحالة الخاص بك وشاركه مع أصدقائك. عندما ينضم شخص إلى البوت عبر رابطك، ستحصل على 150 نقطة.</p>
-            <button id="generate-referral">احصل على رابط الإحالة</button>
+            <h1>Referral System</h1>
+            <p>Get your referral link and share it with your friends. When someone joins through your link, you will earn 150 points.</p>
+            <button id="generate-referral" class="referral-button">Get Referral Link</button>
             <div id="referral-link" style="margin-top: 20px;"></div>
         </div>
     </div>
 
-    <!-- كود الجسيمات (particles.js) -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <div class="bottom-nav">
+        <div id="game-nav"><i class="fas fa-gamepad"></i></div>
+        <div id="referral-nav"><i class="fas fa-share-alt"></i></div>
+    </div>
 
-    <!-- إعدادات الجسيمات -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
     <script>
         particlesJS("particles-js", {
             "particles": {
@@ -156,56 +209,47 @@
                 }
             }
         });
-    </script>
 
-    <!-- الكود الرئيسي للعبة -->
-    <script>
-        // تحميل النقاط من LocalStorage إذا كانت محفوظة
         let score = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
-        document.getElementById('score').innerText = score;
+        document.getElementById('score').innerText = `Points: ${score}`;
 
-        // اختر الصورة من خلال ID الخاص بها
         const gameImage = document.getElementById('game-image');
         const clickSound = document.getElementById('click-sound');
 
-        // التأكد من تحميل الصوت بشكل صحيح
         clickSound.addEventListener('canplaythrough', () => {
-            console.log('الصوت جاهز للتشغيل');
+            console.log('Sound is ready');
         });
 
-        // عندما يتم الضغط على الصورة
         gameImage.addEventListener('click', () => {
-            // زيادة النقاط بمقدار واحد
             score += 1;
-            // تحديث العرض على الشاشة
-            document.getElementById('score').innerText = score;
-            // حفظ النقاط في LocalStorage
+            document.getElementById('score').innerText = `Points: ${score}`;
+            document.getElementById('score').classList.add('updated');
+            setTimeout(() => {
+                document.getElementById('score').classList.remove('updated');
+            }, 300);
             localStorage.setItem('userScore', score);
-           // تشغيل الصوت
-        const clickSound = new Audio('click-sound.mp3'); // إنشاء عنصر صوت جديد
-        clickSound.play().catch(error => {
-            console.error('فشل تشغيل الصوت:', error);
+
+            clickSound.play().catch(error => {
+                console.error('Error playing sound:', error);
             });
         });
 
-        // التبديل بين الأقسام
-        document.getElementById('game-tab').addEventListener('click', () => {
+        document.getElementById('game-nav').addEventListener('click', () => {
             document.getElementById('game-content').classList.add('active');
             document.getElementById('referral-content').classList.remove('active');
-            document.getElementById('game-tab').classList.add('active');
-            document.getElementById('referral-tab').classList.remove('active');
+            document.getElementById('game-nav').classList.add('active');
+            document.getElementById('referral-nav').classList.remove('active');
         });
 
-        document.getElementById('referral-tab').addEventListener('click', () => {
+        document.getElementById('referral-nav').addEventListener('click', () => {
             document.getElementById('game-content').classList.remove('active');
             document.getElementById('referral-content').classList.add('active');
-            document.getElementById('game-tab').classList.remove('active');
-            document.getElementById('referral-tab').classList.add('active');
+            document.getElementById('game-nav').classList.remove('active');
+            document.getElementById('referral-nav').classList.add('active');
         });
 
-        // توليد رابط الإحالة
         document.getElementById('generate-referral').addEventListener('click', () => {
-            fetch('https://davidmo85.github.io/telegram-mini-app', {
+            fetch('https://your-heroku-app.herokuapp.com/generate-referral', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -217,10 +261,4 @@
                 const referralLink = data.referralLink;
                 document.getElementById('referral-link').innerText = referralLink;
             })
-            .catch(error => {
-                console.error('خطأ في توليد الرابط:', error);
-            });
-        });
-    </script>
-</body>
-</html>
+            .

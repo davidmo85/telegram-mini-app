@@ -10,6 +10,7 @@
             font-family: Arial, sans-serif;
             margin-top: 50px;
             background-color: #f0f8ff; /* لون الخلفية */
+            overflow: hidden; /* إخفاء التمرير للتفاعل الكامل مع الخلفية */
         }
         img {
             width: 200px;
@@ -20,7 +21,7 @@
             margin-top: 20px;
         }
 
-  /* إضافة كود CSS للجسيمات */
+        /* إضافة كود CSS للجسيمات */
         #particles-js {
             position: absolute;
             width: 100%;
@@ -28,8 +29,7 @@
             top: 0;
             left: 0;
             z-index: -1;
-   }
-        
+        }
     </style>
 </head>
 <body>
@@ -39,9 +39,9 @@
     <h1>اضغط على الصورة لزيادة النقاط!</h1>
     <img src="metacces.jpg" alt="Click me!" id="game-image">
     <div class="score">النقاط: <span id="score">0</span></div>
- <!-- إضافة الصوت -->
+    
+    <!-- إضافة الصوت -->
     <audio id="click-sound" src="click-sound.mp3"></audio>
-
 
     <!-- كود الجسيمات (particles.js) -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -119,27 +119,25 @@
     });
     </script>
 
-<!-- الكود الرئيسي للعبة -->
-    
+    <!-- الكود الرئيسي للعبة -->
     <script>
-        // متغير لتتبع عدد النقاط
-        let score = 0;
+        // تحميل النقاط من LocalStorage إذا كانت محفوظة
+        let score = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
+        document.getElementById('score').innerText = score;
 
         // اختر الصورة من خلال ID الخاص بها
         const gameImage = document.getElementById('game-image');
         const clickSound = document.getElementById('click-sound');
-         // تحميل النقاط من LocalStorage إذا كانت محفوظة
-        let score = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
-        document.getElementById('score').innerText = score;
+
         // عندما يتم الضغط على الصورة
         gameImage.addEventListener('click', () => {
             // زيادة النقاط بمقدار واحد
             score += 1;
             // تحديث العرض على الشاشة
             document.getElementById('score').innerText = score;
-             // حفظ النقاط في LocalStorage
+            // حفظ النقاط في LocalStorage
             localStorage.setItem('userScore', score);
-            
+            // تشغيل الصوت
             clickSound.play();
         });
     </script>

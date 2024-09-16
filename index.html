@@ -181,9 +181,10 @@
             document.getElementById('score').innerText = score;
             // حفظ النقاط في LocalStorage
             localStorage.setItem('userScore', score);
-            // تشغيل الصوت
-            clickSound.play().catch(error => {
-                console.error('فشل تشغيل الصوت:', error);
+            // إعادة تشغيل الصوت
+        clickSound.currentTime = 0; // إعادة تعيين وقت التشغيل إلى الصفر
+        clickSound.play().catch(error => {
+            console.error('فشل تشغيل الصوت:', error);
             });
         });
 

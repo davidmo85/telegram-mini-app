@@ -218,11 +218,14 @@
         const gameImage = document.getElementById('game-image');
         const clickSound = document.getElementById('click-sound');
 
+        // Check if the sound is ready
         clickSound.addEventListener('canplaythrough', () => {
             console.log('Sound is ready');
         });
 
+        // Handle image click
         gameImage.addEventListener('click', () => {
+            console.log('Image clicked');
             score += 1;
             document.getElementById('score').innerText = `Points: ${score}`;
             document.getElementById('score').classList.add('updated');
@@ -238,6 +241,7 @@
 
         // Tab navigation
         document.getElementById('game-nav').addEventListener('click', () => {
+            console.log('Game tab clicked');
             document.getElementById('game-content').classList.add('active');
             document.getElementById('referral-content').classList.remove('active');
             document.getElementById('game-nav').classList.add('active');
@@ -245,6 +249,7 @@
         });
 
         document.getElementById('referral-nav').addEventListener('click', () => {
+            console.log('Referral tab clicked');
             document.getElementById('game-content').classList.remove('active');
             document.getElementById('referral-content').classList.add('active');
             document.getElementById('game-nav').classList.remove('active');

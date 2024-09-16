@@ -3,10 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق مصغر</title>
+    <title>لعبة الضغط على الصورة</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+        }
+        img {
+            width: 200px;
+            cursor: pointer;
+        }
+        .score {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>مرحبًا بك في تطبيقك المصغر!</h1>
-    <button onclick="alert('لعبة حمستر بدأت!')">ابدأ اللعبة</button>
+    <h1>اضغط على الصورة لزيادة النقاط!</h1>
+    <img src="https://via.placeholder.com/200" alt="Click me!" id="game-image">
+    <div class="score">النقاط: <span id="score">0</span></div>
+
+    <script>
+        // متغير لتتبع عدد النقاط
+        let score = 0;
+
+        // اختر الصورة من خلال ID الخاص بها
+        const gameImage = document.getElementById('game-image');
+
+        // عندما يتم الضغط على الصورة
+        gameImage.addEventListener('click', () => {
+            // زيادة النقاط بمقدار واحد
+            score += 1;
+            // تحديث العرض على الشاشة
+            document.getElementById('score').innerText = score;
+        });
+    </script>
 </body>
 </html>

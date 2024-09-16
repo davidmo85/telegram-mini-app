@@ -181,8 +181,8 @@
             document.getElementById('score').innerText = score;
             // حفظ النقاط في LocalStorage
             localStorage.setItem('userScore', score);
-            // إعادة تشغيل الصوت
-        clickSound.currentTime = 0; // إعادة تعيين وقت التشغيل إلى الصفر
+           // تشغيل الصوت
+        const clickSound = new Audio('click-sound.mp3'); // إنشاء عنصر صوت جديد
         clickSound.play().catch(error => {
             console.error('فشل تشغيل الصوت:', error);
             });

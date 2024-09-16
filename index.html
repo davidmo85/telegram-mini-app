@@ -26,26 +26,6 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             background-color: #ffffff;
         }
-        .tabs {
-            display: flex;
-            justify-content: space-around;
-            background-color: #0288d1;
-        }
-        .tab {
-            padding: 15px;
-            cursor: pointer;
-            font-size: 18px;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .tab.active {
-            background-color: #026aa7;
-        }
-        .tab i {
-            margin-right: 8px;
-        }
         .content {
             padding: 20px;
             display: none;
@@ -111,11 +91,6 @@
 </head>
 <body>
     <div class="container">
-        <div class="tabs">
-            <div class="tab active" id="game-tab"><i class="fas fa-gamepad"></i> Game</div>
-            <div class="tab" id="referral-tab"><i class="fas fa-share-alt"></i> Referral</div>
-        </div>
-
         <div class="content active" id="game-content">
             <div id="particles-js"></div>
             <h1>Click the Image to Increase Points!</h1>
@@ -140,7 +115,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 
     <script>
-        // Initialize particles.js
         particlesJS("particles-js", {
             "particles": {
                 "number": {
@@ -211,21 +185,17 @@
             }
         });
 
-        // Initialize score
         let score = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
         document.getElementById('score').innerText = `Points: ${score}`;
 
         const gameImage = document.getElementById('game-image');
         const clickSound = document.getElementById('click-sound');
 
-        // Check if the sound is ready
         clickSound.addEventListener('canplaythrough', () => {
             console.log('Sound is ready');
         });
 
-        // Handle image click
         gameImage.addEventListener('click', () => {
-            console.log('Image clicked');
             score += 1;
             document.getElementById('score').innerText = `Points: ${score}`;
             document.getElementById('score').classList.add('updated');
@@ -239,9 +209,7 @@
             });
         });
 
-        // Tab navigation
         document.getElementById('game-nav').addEventListener('click', () => {
-            console.log('Game tab clicked');
             document.getElementById('game-content').classList.add('active');
             document.getElementById('referral-content').classList.remove('active');
             document.getElementById('game-nav').classList.add('active');
@@ -249,16 +217,13 @@
         });
 
         document.getElementById('referral-nav').addEventListener('click', () => {
-            console.log('Referral tab clicked');
             document.getElementById('game-content').classList.remove('active');
             document.getElementById('referral-content').classList.add('active');
             document.getElementById('game-nav').classList.remove('active');
             document.getElementById('referral-nav').classList.add('active');
         });
 
-        // Generate referral link
         document.getElementById('generate-referral').addEventListener('click', () => {
-            console.log('Generate referral link clicked');
             fetch('https://your-heroku-app.herokuapp.com/generate-referral', {
                 method: 'POST',
                 headers: {
@@ -272,7 +237,7 @@
                 document.getElementById('referral-link').innerText = referralLink;
             })
             .catch(error => {
-                console.error('Error fetching referral link:', error);
+                console.error('Error generating referral link:', error);
             });
         });
     </script>

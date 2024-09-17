@@ -6,17 +6,18 @@
     <title>Interactive Mini App</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.css">
     <style>
         body {
             text-align: center;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #0a192f; /* Dark background with a touch of blue */
+            background: #0a192f; /* Dark blue background */
             overflow: hidden;
         }
         .container {
@@ -26,6 +27,7 @@
             overflow: hidden;
             box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
             background-color: #111;
+            position: relative;
         }
         .content {
             padding: 20px;
@@ -132,9 +134,9 @@
             <div id="particles-js"></div>
             <h1 class="neon">Welcome to the Interactive Mini App!</h1>
             <p class="neon">Click the image below to earn points.</p>
-            <img src="https://via.placeholder.com/200" alt="Click me!" id="game-image">
+            <img src="https://www.freepik.com/free-photo/abstract-light-blue-background_2265015.htm" alt="Click me!" id="game-image">
             <div class="score" id="score">Points: 0</div>
-            <audio id="click-sound" src="click-sound.mp3" preload="auto"></audio>
+            <audio id="click-sound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
         </div>
 
         <div class="content" id="referral-content">
@@ -162,11 +164,11 @@
             <h1 class="neon">Games</h1>
             <div class="game-container">
                 <div class="game">
-                    <img src="https://via.placeholder.com/150" alt="Game 1">
+                    <img src="https://www.freepik.com/free-photo/abstract-colorful-background_2264083.htm" alt="Game 1">
                     <div class="game-description">Play Game 1 and earn points!</div>
                 </div>
                 <div class="game">
-                    <img src="https://via.placeholder.com/150" alt="Game 2">
+                    <img src="https://www.freepik.com/free-photo/colorful-sky-background_2265086.htm" alt="Game 2">
                     <div class="game-description">Play Game 2 and have fun!</div>
                 </div>
             </div>
@@ -183,7 +185,6 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-
     <script>
         particlesJS("particles-js", {
             "particles": {
@@ -239,59 +240,74 @@
                         "enable": true,
                         "mode": "grab"
                     },
-                    "onclick":
-{ "enable": true, "mode": "push" } }, "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } } } } });
-            let score = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
-    document.getElementById('score').innerText = `Points: ${score}`;
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    }
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    }
+                }
+            }
+        });
 
-    const gameImage = document.getElementById('game-image');
-    const clickSound = document.getElementById('click-sound');
-
-    clickSound.addEventListener('canplaythrough', () => {
-        console.log('Sound is ready');
-    });
-
-    gameImage.addEventListener('click', () => {
-        score += 1;
+        let score = localStorage.getItem('userScore') ? parseInt(localStorage.getItem('userScore')) : 0;
         document.getElementById('score').innerText = `Points: ${score}`;
-        document.getElementById('score').classList.add('updated');
-        setTimeout(() => {
-            document.getElementById('score').classList.remove('updated');
-        }, 300);
-        localStorage.setItem('userScore', score);
 
-        clickSound.play().catch(error => {
-            console.error('Error playing sound:', error);
+        const gameImage = document.getElementById('game-image');
+        const clickSound = document.getElementById('click-sound');
+
+        clickSound.addEventListener('canplaythrough', () => {
+            console.log('Sound is ready');
         });
-    });
 
-    document.querySelectorAll('.top-nav div, .bottom-nav div').forEach(nav => {
-        nav.addEventListener('click', (event) => {
-            const id = event.target.id || event.target.parentElement.id;
-            const contentId = id.replace('-nav', '-content');
-            document.querySelectorAll('.content').forEach(content => {
-                content.classList.remove('active');
+        gameImage.addEventListener('click', () => {
+            score += 1;
+            document.getElementById('score').innerText = `Points: ${score}`;
+            document.getElementById('score').classList.add('updated');
+            setTimeout(() => {
+                document.getElementById('score').classList.remove('updated');
+            }, 300);
+            localStorage.setItem('userScore', score);
+
+            clickSound.play().catch(error => {
+                console.error('Error playing sound:', error);
             });
-            document.getElementById(contentId).classList.add('active');
         });
-    });
 
-    document.getElementById('generate-referral').addEventListener('click', () => {
-        fetch('https://your-heroku-app.herokuapp.com/generate-referral', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ action: 'generateReferralLink' })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const referralLink = data.referralLink;
-            document.getElementById('referral-link').innerText = referralLink;
-        })
-        .catch(error => {
-            console.error('Error generating referral link:', error);
+        document.querySelectorAll('.top-nav div, .bottom-nav div').forEach(nav => {
+            nav.addEventListener('click', (event) => {
+                const id = event.target.id || event.target.parentElement.id;
+                const contentId = id.replace('-nav', '-content');
+                document.querySelectorAll('.content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(contentId).classList.add('active');
+            });
         });
-    });
-</script>
-</body> </html>```
+
+        document.getElementById('generate-referral').addEventListener('click', () => {
+            fetch('https://your-heroku-app.herokuapp.com/generate-referral', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ action: 'generateReferralLink' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const referralLink = data.referralLink;
+                document.getElementById('referral-link').innerText = referralLink;
+            })
+            .catch(error => {
+                console.error('Error generating referral link:', error);
+            });
+        });
+    </script>
+</body>
+</html>

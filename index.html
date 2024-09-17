@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Click Game</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         body {
             text-align: center;
@@ -20,11 +21,12 @@
         }
         .container {
             width: 90%;
-            max-width: 800px;
-            border-radius: 10px;
+            max-width: 900px;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
             background-color: #ffffff;
+            position: relative;
         }
         .content {
             padding: 20px;
@@ -34,15 +36,15 @@
             display: block;
         }
         img {
-            width: 200px;
+            width: 250px;
             cursor: pointer;
             transition: transform 0.3s ease;
         }
         img:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
         .score {
-            font-size: 24px;
+            font-size: 28px;
             margin-top: 20px;
             transition: color 0.3s ease;
         }
@@ -61,58 +63,131 @@
             background-color: #0288d1;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
             transition: background-color 0.3s ease;
         }
         .referral-button:hover {
             background-color: #026aa7;
         }
-        .bottom-nav {
+        .bottom-nav, .top-nav {
             position: fixed;
-            bottom: 0;
             width: 100%;
             background-color: #0288d1;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 12px 0;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
         }
-        .bottom-nav div {
+        .bottom-nav div, .top-nav div {
             color: #ffffff;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
             transition: color 0.3s ease;
         }
-        .bottom-nav div:hover {
+        .bottom-nav div.active, .top-nav div.active {
             color: #026aa7;
+        }
+        .bottom-nav div:hover, .top-nav div:hover {
+            color: #026aa7;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #0288d1;
+            color: white;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1;
+        }
+        .header .title {
+            font-size: 24px;
+            margin-left: 20px;
+        }
+        .header .menu-icon {
+            font-size: 24px;
+            margin-right: 20px;
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <div class="title">Interactive Click Game</div>
+        <div class="menu-icon"><i class="fas fa-bars"></i></div>
+    </div>
+
+    <div class="top-nav">
+        <div id="game-nav"><i class="fas fa-gamepad"></i></div>
+        <div id="referral-nav"><i class="fas fa-share-alt"></i></div>
+        <div id="settings-nav"><i class="fas fa-cogs"></i></div>
+        <div id="rewards-nav"><i class="fas fa-gift"></i></div>
+        <div id="support-nav"><i class="fas fa-headset"></i></div>
+    </div>
+
     <div class="container">
+        <!-- Game Content -->
         <div class="content active" id="game-content">
             <div id="particles-js"></div>
-            <h1>Click the Image to Increase Points!</h1>
+            <h1 class="animate__animated animate__fadeIn">Click the Image to Increase Points!</h1>
             <img src="metacces.jpg" alt="Click me!" id="game-image">
             <div class="score" id="score">Points: 0</div>
             <audio id="click-sound" src="click-sound.mp3" preload="auto"></audio>
         </div>
+
+        <!-- Referral Content -->
         <div class="content" id="referral-content">
-            <h1>Referral System</h1>
+            <h1 class="animate__animated animate__fadeIn">Referral System</h1>
             <p>Get your referral link and share it with your friends. When someone joins through your link, you will earn 150 points.</p>
             <button id="generate-referral" class="referral-button">Get Referral Link</button>
             <div id="referral-link" style="margin-top: 20px;"></div>
         </div>
+
+        <!-- Settings Content -->
+        <div class="content" id="settings-content">
+            <h1 class="animate__animated animate__fadeIn">Settings</h1>
+            <p>Customize your experience by adjusting the settings below.</p>
+            <div class="setting-option">
+                <label for="sound-toggle">Sound Effects</label>
+                <input type="checkbox" id="sound-toggle" checked>
+            </div>
+            <div class="setting-option">
+                <label for="notifications-toggle">Notifications</label>
+                <input type="checkbox" id="notifications-toggle" checked>
+            </div>
+        </div>
+
+        <!-- Rewards Content -->
+        <div class="content" id="rewards-content">
+            <h1 class="animate__animated animate__fadeIn">Daily Rewards</h1>
+            <p>Earn rewards by completing daily challenges.</p>
+            <button class="referral-button">Claim Reward</button>
+        </div>
+
+        <!-- Support Content -->
+        <div class="content" id="support-content">
+            <h1 class="animate__animated animate__fadeIn">Support</h1>
+            <p>If you need help or have any questions, please contact us.</p>
+            <p>Email: support@example.com</p>
+            <p>Phone: +123-456-7890</p>
+        </div>
     </div>
 
     <div class="bottom-nav">
-        <div id="game-nav"><i class="fas fa-gamepad"></i></div>
-        <div id="referral-nav"><i class="fas fa-share-alt"></i></div>
+        <div id="game-nav-bottom"><i class="fas fa-gamepad"></i></div>
+        <div id="referral-nav-bottom"><i class="fas fa-share-alt"></i></div>
+        <div id="settings-nav-bottom"><i class="fas fa-cogs"></i></div>
+        <div id="rewards-nav-bottom"><i class="fas fa-gift"></i></div>
+        <div id="support-nav-bottom"><i class="fas fa-headset"></i></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
 
     <script>
         particlesJS("particles-js", {
@@ -209,18 +284,14 @@
             });
         });
 
-        document.getElementById('game-nav').addEventListener('click', () => {
-            document.getElementById('game-content').classList.add('active');
-            document.getElementById('referral-content').classList.remove('active');
-            document.getElementById('game-nav').classList.add('active');
-            document.getElementById('referral-nav').classList.remove('active');
-        });
-
-        document.getElementById('referral-nav').addEventListener('click', () => {
-            document.getElementById('game-content').classList.remove('active');
-            document.getElementById('referral-content').classList.add('active');
-            document.getElementById('game-nav').classList.remove('active');
-            document.getElementById('referral-nav').classList.add('active');
+        document.querySelectorAll('.top-nav div, .bottom-nav div').forEach((navItem) => {
+            navItem.addEventListener('click', () => {
+                const targetId = navItem.id.replace('-bottom', '').replace('-nav', '');
+                document.querySelectorAll('.content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${targetId}-content`).classList.add('active');
+                document.querySelectorAll('.top-nav div, .bottom-nav div').forEach(item => item.classList.remove('active'));
+                navItem.classList.add('active');
+            });
         });
 
         document.getElementById('generate-referral').addEventListener('click', () => {

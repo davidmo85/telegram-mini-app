@@ -10,7 +10,7 @@ let userBoosts = {};  // تخزين التعزيزات لكل مستخدم
 let userLastLogin = {};  // تخزين آخر وقت دخول لكل مستخدم
 
 // إعداد البوت
-const bot = new Telegraf('Y6820999044:AAGxzz0f35f1XnF-kCzOb7z0LYIpHKzuSnAOUR_BOT_TOKEN');
+const bot = new Telegraf('6820999044:AAGxzz0f35f1XnF-kCzOb7z0LYIpHKzuSnA');
 bot.start((ctx) => {
     ctx.reply('مرحبًا! اضغط على الزر لفتح مشروعك:', {
         reply_markup: {

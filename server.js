@@ -11,6 +11,21 @@ let userLastLogin = {};  // تخزين آخر وقت دخول لكل مستخد�
 
 // إعداد البوت
 const bot = new Telegraf('Y6820999044:AAGxzz0f35f1XnF-kCzOb7z0LYIpHKzuSnAOUR_BOT_TOKEN');
+bot.start((ctx) => {
+    ctx.reply('مرحبًا! اضغط على الزر لفتح مشروعك:', {
+        reply_markup: {
+            inline_keyboard: [
+                [{ text: 'افتح المشروع', url: 'https://davidmo85.github.io/telegram-mini-app/' }]
+            ]
+        }
+    });
+});
+
+bot.launch().then(() => {
+    console.log('الروبوت يعمل');
+}).catch((err) => {
+    console.error('فشل في تشغيل الروبوت:', err);
+});
 
 // حساب المستوى بناءً على عدد النقاط
 function calculateLevel(score) {
